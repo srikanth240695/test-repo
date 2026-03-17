@@ -62,7 +62,10 @@ resource "google_container_cluster" "primary" {
   subnetwork          = google_compute_subnetwork.custom-subnet.id
   deletion_protection = false
   remove_default_node_pool = true
-  initial_node_count       = 1  
+  initial_node_count       = 1 
+  release_channel {
+    channel = "REGULAR"
+  }
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
@@ -75,6 +78,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     machine_type   = "e2-medium"  # Use a smaller instance to reduce storage requirements
     disk_size_gb   = "15"
     disk_type      = "pd-standard"
+    boot_disk_kms_key = null
     image_type     = "UBUNTU_CONTAINERD"
   }
 }
